@@ -1,6 +1,10 @@
+import 'react-app-polyfill/ie11'
+import 'react-app-polyfill/stable'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import AcDaily from '../projects/AcDaily'
+import AcDaily from 'src/projects/AcDaily'
+import { store } from 'src/store'
+import { Provider } from 'react-redux'
 
 const id = 'react--acDaily--root'
 const rootElement = document.createElement('DIV')
@@ -10,9 +14,18 @@ if (!document.getElementById(id)) {
 }
 // New as of React v18.x
 const root = createRoot(rootElement!)
-
-root.render(
-  <StrictMode>
+const Node = () => (
+  <Provider store={store}>
     <AcDaily />
-  </StrictMode>
+  </Provider>
 )
+
+if (process.env.NODE_ENV != 'development') {
+  root.render(<Node />)
+} else {
+  root.render(
+    <StrictMode>
+      <Node />
+    </StrictMode>
+  )
+}
