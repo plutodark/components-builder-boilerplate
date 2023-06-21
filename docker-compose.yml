@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  storybook:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: local-dev
+    container_name: storybook
+    image: local-image:1
+    ports: 
+      - 6006:6006
+    volumes:
+      - /usr/src/app/node_modules
+      - .:/usr/src/app
+    command: yarn storybook
+
+  webservice:
+    image: local-image:1
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: local-dev
+    ports: 
+      - 6016:6016
+    volumes:
+      - /usr/src/app/node_modules
+      - .:/usr/src/app
+    command: yarn dev
